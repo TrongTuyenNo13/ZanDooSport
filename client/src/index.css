@@ -1,0 +1,25 @@
+:root {
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  
+  /* Cấu hình màu nền trắng */
+  color-scheme: light;
+  background-color: #f5f7fa; /* Màu trắng xám nhẹ cho dịu mắt */
+  color: #333; /* Chữ màu đen xám */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: block;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
