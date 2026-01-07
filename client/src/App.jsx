@@ -31,7 +31,7 @@ function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('http://localhost:8888/api/products');
+        const res = await axios.get('https://zandoosport.onrender.com/api/prodiucts');
         setProducts(res.data);
       } catch (err) {
         console.error("Lỗi kết nối:", err);
