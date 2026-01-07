@@ -138,7 +138,7 @@ function App() {
           </div>
           
           <button className="checkout-btn" onClick={handleCheckout}>THANH TOÁN</button>
-          <button className="back-btn" onClick={() => setView('home')}>← Quay lại mua thêm</button>
+          <button className="back-btn" onClick={() => setView('home')}>← Quay lại mua trang mua sắm</button>
         </div>
       </div>
     )}
@@ -178,13 +178,13 @@ function App() {
 
             {totalPages > 1 && (
               <div className="pagination">
-                <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>Previous</button>
+                <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>Trang Trước</button>
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button key={i + 1} className={currentPage === i + 1 ? 'active' : ''} onClick={() => setCurrentPage(i + 1)}>
                     {i + 1}
                   </button>
                 ))}
-                <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>Next</button>
+                <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>Trang Sau</button>
               </div>
             )}
           </div>
