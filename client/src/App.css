@@ -55,7 +55,7 @@ body { background: var(--bg); color: var(--text); font-family: sans-serif; }
 .cart-item { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #eee; }
 .cart-item-img { width: 80px; height: 80px; object-fit: contain; border: 1px solid #eee; border-radius: 8px; padding: 5px; }
 .cart-item-info { flex: 1; padding: 0 20px; }
-.cart-item-info h3 { font-size: 1rem; color: #333; margin-bottom: 5px; }
+.cart-item-info h3 { font-size: 1rem; font-weight: 700; color: #333; margin-bottom: 10px; height: auto; overflow: visible; ;min-height: 40px; line-height: 1.4; display: block; }
 .cart-item-price { color: #e11d48; font-weight: bold; font-size: 1.1rem; }
 
 /* Nút bấm giỏ hàng */
