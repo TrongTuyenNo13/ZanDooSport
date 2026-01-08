@@ -17,7 +17,7 @@ router.post('/register', async (req, res) => {
             ]
         });
         if (existingUser) {
-            return res.status(400).json({ mesage: 'Email hoặc Số điện thoại này đã được sử dụng!'});
+            return res.status(400).json({ message: 'Email hoặc Số điện thoại này đã được sử dụng!'});
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -26,8 +26,8 @@ router.post('/register', async (req, res) => {
         const newUser = new User ({
             name,
             password: hashedPassword,
-            ...User(email && { email }),
-            ...User(phone && { phone })
+            ...(email && { email }),
+            ...(phone && { phone })
         });
 
         const user = await newUser.save();
@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
             name: user.name,
             email: user.email,
             phone: user.phone,
-            mesage: 'Đăng ký thành công!'
+            message: 'Đăng ký thành công!'
         });
     } catch (err) {
         res.status(500).json({ message: 'Lỗi máy chủ: ' + err.mesage});
