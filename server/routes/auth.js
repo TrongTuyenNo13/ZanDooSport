@@ -12,7 +12,7 @@ router.post('/register', async (req, res) => {
 
         const existingUser = await User.findOne ({
             $or: [
-                { email: emal || "khong-co-email"},
+                { email: email || "khong-co-email"},
                 { phone: phone || "khong-co-phone"}
             ]
         });
@@ -77,4 +77,4 @@ router.post('/login', async (req, res) => {
     }
 });
 
-module.export = router;
+module.exports = router;
