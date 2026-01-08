@@ -95,3 +95,129 @@ body { background: var(--bg); color: var(--text); font-family: sans-serif; }
   font-size: 0.9rem;
   border-top: 1px solid #eee; /* Đường kẻ mờ ngăn cách */
 }
+
+/* --- NÚT LIÊN HỆ NỔI (FLOATING BUTTONS) --- */
+.contact-floating {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.contact-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: 0.3s;
+  animation: pulse-animation 2s infinite;
+  background: #fff;
+  border: 2px solid #fff
+}
+
+.contact-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contact-icon:hover {
+  transform: scale(1.1);
+}
+
+.zalo { background: #fff;}
+.messenger { background: #fff;}
+.hotline {
+  background: #fff;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+@keyframes pulse-animation {
+  0% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2); }
+  70% { box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+
+/* --- THÔNG BÁO TỰ ĐỘNG (TOAST NOTIFICATION) --- */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  padding: 15px 25px;
+  border-left: 5px solid #2ecc71;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 2000;
+  animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+  min-width: 300px;  
+}
+
+.toast-icon {
+  font-size: 1.5rem;
+  color: #2ecc71;
+}
+
+.toast-body h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.toast-body p {
+  margin: tpx 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+
+/* --- NÚT ĐĂNG NHẬP (HEADER) --- */
+.login-btn {
+  margin-left: 20px;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #333;
+  color: #fff;
+}
