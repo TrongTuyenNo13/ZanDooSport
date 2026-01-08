@@ -8,6 +8,9 @@ function App() {
   const [view, setView] = useState('home');
   const [category, setCategory] = useState('all');
 
+  const[user, setUser] = useState(null);
+  const [authForm, setAuthForm] = useState({ name: '', email: '', phone: '', password: '', loginInput: ''});
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const [currentBanner, setCurrentBanner] = useState(0);
@@ -21,6 +24,13 @@ function App() {
     
     "https://i.pinimg.com/1200x/57/dd/fc/57ddfcf27ea2192fe812e24a80e66cf8.jpg"
   ]
+
+  useEffect(() => {
+    const savedUdser = localStorage.getItem('user');
+    if (savedUdser) {
+      setUser(JSON.parse(savedUdser));
+    }
+  }, []);
 
   useEffect (() => {
     const timer = setInterval(() => {
@@ -46,8 +56,49 @@ function App() {
   const showToast = (title, message) => {
     setToast({ title, message});
     setTimeout(() => setToast(null), 3000);
-  }
+  };
 
+  const handleAuthChange = (e) => {
+    setAuthForm({ ...authForm, [e.target.name] : e.target.value });
+  };
+
+  const doRegister = async () => {
+    try {
+      const res = await axios.post('https://zandoosport.onrender.com/api/auth/register', {
+        name: authForm.name,
+        email: authForm.email,
+        phone: authForm.phone,
+        password: authForm.password
+      });
+      showToast("Chúc mừng bạn!", "Bạn đã đăng ký tài khoản thành công.");
+      setView('login');
+    } catch (err) {
+      showToast("Lỗi đăng ký!", err.response.data.message || "Đăng kí không thành công, vui lòng thử lại.");
+    }
+  };
+
+  const doLogin = async () => {
+    try {
+      const res = await axios.post('https://zandoosport.onrender.com/api/auth/login', {
+        loginInput: authForm.loginInput,
+        password: authForm.password
+      });
+
+      localStorage.setItem('user', JSON.stringify(res.data));
+      setUser(res.data);
+      showToast(`Chào mừng ${res.data.name} đến với ZanDoo Sport!`);
+      setView('home');
+    } catch (err) {
+      showToast("Lỗi đăng nhập!", err.response.data.message || "Đăng nhập không thành công, vui lòng thử lại.");
+    }
+  };
+
+  const doLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    showToast("Đã đăng xuất!", "Bạn đã đăng xuất khỏi tài khoản.");
+    setView('home');
+  };
 
   const addToCart = (product) => {
     const exist = cart.find((x) => x._id === product._id);
@@ -71,10 +122,11 @@ function App() {
 
   const removeAll = (product) => {
     setCart(cart.filter((x) => x._id !== product._id));
-    showToast("Đã xóa!", `Đã bỏ ${item.name} khỏi giỏ hàng.`)
+    showToast("Đã xóa!", `Đã bỏ ${product.name} khỏi giỏ hàng.`)
   };
 
   const handleCheckout = () => {
+    if (!user) return showToast("Vui lòng đăng nhập!", "Bạn cần đăng nhập để thực hiện thanh toán.");
     if(cart.length === 0) return alert("Giỏ hàng của bạn đang trống, vui lòng chọn 1 sản phẩm!");
     showToast("THANH TOÁN THÀNH CÔNG! Cảm ơn bạn đã mua hàng tại ZanDoo Sport.");
     setCart([]); 
@@ -90,14 +142,15 @@ function App() {
 
   const handleCategoryChange = (Cat) => { setCategory(Cat); setCurrentPage(1); };
 
-  const handleLogin = () => {
-    const name = prompt("Vui lòng nhập tên của bạn:");
-    if (name) showToast("Xin chào!", `Chào mừng ${name} đến với ZanDoo Sport!`);
+  const getCategoryLabel = (cat) => {
+    if (cat === 'all') return 'TẤT CẢ';
+    if (cat === 'Giày') return 'GIÀY BÓNG ĐÁ';
+    return cat.toUpperCase();
   }
 
   
   return (
-    <div className="app-container">
+   <div className="app-container">
       {toast && (
         <div className="toast-notification">
           <div className="toast-icon">✅</div>
@@ -120,6 +173,7 @@ function App() {
         </a>
       </div>
 
+      {/* HEADER */}
       <header className="header">
         <div className="brand-section" onClick={() => setView('home')}>
           <h1 className="brand-name">ZANDOO SPORT</h1>
@@ -130,32 +184,65 @@ function App() {
           <div className="cart-btn" onClick={() => setView('cart')}>
             🛒 <span className="cart-count">{cart.reduce((a, c) => a + c.qty, 0)}</span>
           </div>
-          <button className="login-btn" onClick={handleLogin}>Đăng nhập</button>
+          {user ? (
+            <div className="user-info">
+              <span className="user-name">Hi, {user.name}</span>
+              <button className="logout-btn" onClick={doLogout}>(Đăng xuất)</button>
+            </div>
+          ) : (
+            <button className="login-btn" onClick={() => setView('login')}>Đăng nhập</button>
+          )}
         </div>
       </header>
 
       <main className="main-content">
-        {view === 'cart' ? (
+        {view === 'login' && (
+          <div className="auth-container">
+            <h2 className="auth-title">ĐĂNG NHẬP</h2>
+            <div className="form-group">
+              <label>Email hoặc Số điện thoại:</label>
+              <input className="form-input" name="loginInput" type="text" placeholder="Nhập email hoặc SĐT" onChange={handleAuthChange} />
+            </div>
+            <div className="form-group">
+              <label>Mật khẩu:</label>
+              <input className="form-input" name="password" type="password" placeholder="Nhập mật khẩu" onChange={handleAuthChange} />
+            </div>
+            <button className="auth-btn" onClick={doLogin}>ĐĂNG NHẬP NGAY</button>
+            <p className="toggle-auth">Chưa có tài khoản? <span onClick={() => setView('register')}>Đăng ký tại đây</span></p>
+          </div>
+        )}
+
+
+        {view === 'register' && (
+          <div className="auth-container">
+            <h2 className="auth-title">TẠO TÀI KHOẢN</h2>
+            <div className="form-group"><label>Họ và Tên:</label><input className="form-input" name="name" type="text" placeholder="Ví dụ: Nguyễn Văn A" onChange={handleAuthChange} /></div>
+            <div className="form-group"><label>Email (Không bắt buộc):</label><input className="form-input" name="email" type="email" placeholder="example@gmail.com" onChange={handleAuthChange} /></div>
+            <div className="form-group"><label>Số điện thoại:</label><input className="form-input" name="phone" type="text" placeholder="0909xxxxxx" onChange={handleAuthChange} /></div>
+            <div className="form-group"><label>Mật khẩu:</label><input className="form-input" name="password" type="password" placeholder="******" onChange={handleAuthChange} /></div>
+            <button className="auth-btn" onClick={doRegister}>ĐĂNG KÝ NGAY</button>
+            <p className="toggle-auth">Đã có tài khoản? <span onClick={() => setView('login')}>Đăng nhập</span></p>
+          </div>
+        )}
+
+
+        {view === 'cart' && (
           <div className="cart-container">
             <h2 className="section-title">GIỎ HÀNG</h2>
             {cart.length === 0 ? (
-              <div className="empty-cart"><p>Giỏ hàng đang trống...</p><button className="continue-btn" onClick={() => setView('home')}>QUAY LẠI MUA TRANG SẮM</button></div>
+              <div className="empty-cart">
+                <p>Giỏ hàng đang trống...</p>
+                <button className="continue-btn" onClick={() => setView('home')}>QUAY LẠI TRANG MUA SẮM</button>
+              </div>
             ) : (
               <div className="cart-content">
                 <div className="cart-list">
                   {cart.map((item) => (
                     <div key={item._id} className="cart-item">
                       <img src={item.image} alt={item.name} className="cart-item-img" />
-                      <div className="cart-item-info">
-                        <h3>{item.name}</h3>
-                        <p className="cart-item-price">{item.price.toLocaleString()} VNĐ</p>
-                      </div>
+                      <div className="cart-item-info"><h3>{item.name}</h3><p className="cart-item-price">{item.price.toLocaleString()} VNĐ</p></div>
                       <div className="cart-item-actions">
-                        <div className="qty-group">
-                          <button className="qty-btn" onClick={() => removeFromCart(item)}>-</button>
-                          <span className="qty-value">{item.qty}</span>
-                          <button className="qty-btn" onClick={() => addToCart(item)}>+</button>
-                        </div>
+                        <div className="qty-group"><button className="qty-btn" onClick={() => removeFromCart(item)}>-</button><span className="qty-value">{item.qty}</span><button className="qty-btn" onClick={() => addToCart(item)}>+</button></div>
                         <button className="del-btn" onClick={() => removeAll(item)}>Xóa</button>
                       </div>
                     </div>
@@ -170,7 +257,9 @@ function App() {
               </div>
             )}
           </div>
-        ) : (
+        )}
+
+        {view === 'home' && (
           <div className="shop-container">
             <div className="banner-container">
               <img src={banners[currentBanner]} alt="Banner" className="banner-img" />
@@ -178,9 +267,9 @@ function App() {
             </div>
 
             <div className="category-bar">
-              {['all', 'GIÀY BÓNG ĐÁ', 'ÁO ĐẤU', 'PHỤ KIỆN'].map(cat => (
-                <button key={cat} className={category === cat ? 'active' : ''} onClick={() => handleCategoryChange(cat)}>
-                  {cat === 'all' ? 'TẤT CẢ' : cat.toUpperCase()}
+              {['all', 'Giày', 'Áo đấu', 'Phụ kiện'].map(cat => (
+                <button key={cat} className={category === cat ? 'active' : ''} onClick={() => { setCategory(cat); setCurrentPage(1); }}>
+                  {getCategoryLabel(cat)}
                 </button>
               ))}
             </div>

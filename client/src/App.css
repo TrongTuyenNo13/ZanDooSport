@@ -221,3 +221,57 @@ body { background: var(--bg); color: var(--text); font-family: sans-serif; }
   background: #333;
   color: #fff;
 }
+
+/* --- GIAO DIỆN ĐĂNG NHẬP / ĐĂNG KÝ --- */
+.auth-container {
+  max-width: 450px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; font-size: 0.9rem; }
+.form-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+.form-input:focus { border-color: #000; outline: none; }
+
+.auth-btn {
+  width: 100%;
+  padding: 15px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+.auth-btn:hover { background: #333; transform: translateY(-2px); }
+
+.toggle-auth { margin-top: 20px; font-size: 0.9rem; color: #666; }
+.toggle-auth span { color: #2563eb; font-weight: bold; cursor: pointer; text-decoration: underline; }
+
+/* Header User Info */
+.user-info { display: flex; align-items: center; gap: 10px; margin-left: 20px; }
+.user-name { font-weight: bold; color: #000; }
+.logout-btn { font-size: 0.8rem; color: #e11d48; cursor: pointer; text-decoration: underline; background: none; border: none; }
