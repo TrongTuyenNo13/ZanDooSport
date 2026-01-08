@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Product = require('./models/Product');
+const authRoute = require('./routes/auth');
+const productRoute = require('./routes/products');
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +14,9 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('Lỗi kết nối MongoDB: ',err));
+
+app.use('/api/auth', authRoute);
+app.use('/api/products', proRoute);
 
 // API 1: Lấy toàn bộ sản phẩm
 app.get('/api/products', async (req, res) => {
