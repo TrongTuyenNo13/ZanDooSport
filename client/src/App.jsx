@@ -61,7 +61,7 @@ function App() {
 
   // --- LOGIC GIỎ HÀNG CÓ SIZE ---
   const addToCart = (product, size) => {
-    if (product.sizes && product.sizes.length > 0 && !size) return showToast("Chọn Size", "Vui lòng chọn Size trước!");
+    if (product.size && product.size.length > 0 && !size) return showToast("Chọn Size", "Vui lòng chọn Size trước!");
     const itemKey = size ? `${product._id}-${size}` : product._id;
     const exist = cart.find((x) => x.key === itemKey);
     if (exist) setCart(cart.map((x) => x.key === itemKey ? { ...exist, qty: exist.qty + 1 } : x));
@@ -208,11 +208,11 @@ function App() {
                 <p><strong>Mô tả sản phẩm:</strong> {selectedProduct.description}</p>
               </div>
 
-              {selectedProduct.sizes && selectedProduct.sizes.length > 0 && (
+              {selectedProduct.size && selectedProduct.size.length > 0 && (
                 <div className="size-section">
-                  <span className="size-label">CHỌN SIZE ({selectedProduct.sizes.length} sizes):</span>
+                  <span className="size-label">CHỌN SIZE ({selectedProduct.size.length} size):</span>
                   <div className="size-grid">
-                    {selectedProduct.sizes.map(sz => (
+                    {selectedProduct.size.map(sz => (
                       <button key={sz} className={`size-btn ${selectedSize === sz ? 'selected' : ''}`} onClick={() => setSelectedSize(sz)}>{sz}</button>
                     ))}
                   </div>
