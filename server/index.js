@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Product = require('./models/Product');
 const authRoute = require('./routes/auth');
+const Order = require('./models/Order');
 require('dotenv').config();
 
 const app = express();
@@ -76,6 +77,25 @@ app.get('/api/seed', async (req, res) => {
         res.send("ĐÃ THÊM DỮ LIỆU THÀNH CÔNG! VUI LÒNG QUAY LẠI TRANG CHỦ.");
     } catch (err) {
         res.status(500).send("LỖI KHI THÊM DỮ LIỆU: " + err.message);
+    }
+});
+
+app.post('/api/orders', async (req, res) => {
+    try {
+        const newOrder = new Order(req.body);
+        const savedOrder = await newOrder.save();
+        res.status(200).json(savedOrder);
+    } catch (err) {
+        res.status(500).json({ message: 'Lỗi tạo đơn hàng: ' + err.message});
+    }
+});
+
+app.get('/api/orders', async (req, res) => {
+    try {
+        const orders = await Order.find().sort({ createdAt: -1 });
+        res.status(200).json(orders);
+    } catch (err) {
+        res.status(500).json({ message: 'Lỗi lấy đơn hàng: ' + err.message});
     }
 });
 
