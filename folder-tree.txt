@@ -1,0 +1,15 @@
+src/
+  ├── components/      (Chứa các thành phần nhỏ dùng chung)
+  │     ├── Header.jsx
+  │     ├── Footer.jsx
+  │     └── ProductCard.jsx
+  ├── pages/           (Chứa các trang màn hình chính)
+  │     ├── HomePage.jsx
+  │     ├── ProductDetailPage.jsx
+  │     ├── CartPage.jsx
+  │     ├── AdminPage.jsx
+  │     ├── LoginPage.jsx
+  │     └── RegisterPage.jsx
+  ├── App.jsx
+  ├── App.css
+  └── main.jsx

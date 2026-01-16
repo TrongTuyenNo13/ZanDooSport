@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
             message: 'Đăng ký thành công!'
         });
     } catch (err) {
-        res.status(500).json({ message: 'Lỗi máy chủ: ' + err.mesage});
+        res.status(500).json({ message: 'Lỗi máy chủ: ' + err.message});
     }
 });
 

@@ -656,11 +656,12 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .size-btn {
-  width: 50px;
   height: 40px;
+  padding: 8px 15px;
   border: 1px solid #cbd5e1;
   background: white;
   cursor: pointer;
