@@ -7,7 +7,11 @@ const Order = require('./models/Order');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ["https://new-zan-doo-sport.vercel.app", "http://localhost:5173", "http://localhost:8888"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 app.use(express.json());
 
 // Kết nối MongoDB 
@@ -16,7 +20,6 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => console.log('Lỗi kết nối MongoDB: ',err));
 
 app.use('/api/auth', authRoute);
-
 
 // API 1: Lấy toàn bộ sản phẩm
 app.get('/api/products', async (req, res) => {
